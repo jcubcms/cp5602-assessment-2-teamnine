@@ -1,58 +1,71 @@
-<?php
-/**
- * The header for our theme
- *
- * This is the template that displays all of the <head> section and everything up until <div id="content">
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package jcub-u3a
- */
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><?php wp_title(); ?><?php bloginfo('name'); ?></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="<?php bloginfo('template_url'); ?>/images/favicon.ico" />
+    <!-- Importing Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-?>
-<!doctype html>
-<html <?php language_attributes(); ?>>
-<head>
-	<meta charset="<?php bloginfo( 'charset' ); ?>">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="profile" href="https://gmpg.org/xfn/11">
+    <!-- Wordpress Script Enqueue Location -->
+    <?php wp_head(); ?>
 
-	<?php wp_head(); ?>
-</head>
+    <!-- Theme Main Stylesheet -->
+	  <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/style.css" type="text/css" />
 
-<body <?php body_class(); ?>>
-<div id="page" class="site">
-	<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'Skip to content', 'jcub-u3a' ); ?></a>
-
-	<header id="masthead" class="site-header">
-		<div class="site-branding">
-			<?php
-			the_custom_logo();
-			if ( is_front_page() && is_home() ) :
-				?>
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-				<?php
-			endif;
-			$jcub_u3a_description = get_bloginfo( 'description', 'display' );
-			if ( $jcub_u3a_description || is_customize_preview() ) :
-				?>
-				<p class="site-description"><?php echo $jcub_u3a_description; /* WPCS: xss ok. */ ?></p>
-			<?php endif; ?>
-		</div><!-- .site-branding -->
-
-		<nav id="site-navigation" class="main-navigation">
-			<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php esc_html_e( 'Primary Menu', 'jcub-u3a' ); ?></button>
-			<?php
-			wp_nav_menu( array(
-				'theme_location' => 'menu-1',
-				'menu_id'        => 'primary-menu',
-			) );
-			?>
-		</nav><!-- #site-navigation -->
-	</header><!-- #masthead -->
-
-	<div id="content" class="site-content">
+  </head>
+  <body>
+    <?php
+    $postid = get_the_ID();
+    $headerTransparency = get_post_meta( $postid ,'_trans', true);
+    $headerColor = get_post_meta( $postid ,'_headerColor', true);
+    if (is_archive() || is_home()){
+      $headerTransparency = 'off';
+      $headerColor = 'dark';
+    }
+    if($headerTransparency != 'on'){
+      $showme = 'off';
+      $solid = 'solid';
+      $headerColor = 'dark';
+    }
+    elseif($headerTransparency == 'on'){
+      $showme = 'on';
+      $headerColor = get_post_meta( $postid ,'_headerColor', true);
+    }
+    ?>
+    <!-- Navigation -->
+    <div class="navbar-fixed transparency <?php echo $headerColor; ?> <?php echo $solid; ?>">
+      
+		
+<nav>
+<!-- Dropdown Structure -->
+<ul id="dropdown1" class="dropdown-content">
+  <li><a href="#!">one</a></li>
+  <li><a href="#!">two</a></li>
+  <li class="divider"></li>
+  <li><a href="#!">three</a></li>
+</ul>
+<nav>
+  <div class="nav-wrapper">
+    
+	  
+    <ul class="right hide-on-med-and-down">
+      <?php wp_nav_menu(array('theme_location' => 'primary', 'menu_class' => 'right hide-on-med-and-down')); ?>
+    </ul>
+	<ul id="nav-mobile" class="sidenav show-on-med-and-down hide-on-med-and-up">
+        <li><a href="#">Navbar Link</a></li>
+     </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger show-on-med-and-down hide-on-med-and-up"><i class="material-icons">menu</i></a>
+		
+	<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+</div>
+</nav>
+        
+		
+		
+    </div>
+    <div class="<?php echo $showme; ?>"></div>
+	  <div class="row"></div>
+	  <div class="row"></div>
+	  <div class="row"></div>
