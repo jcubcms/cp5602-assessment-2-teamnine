@@ -58,6 +58,7 @@ function includeLibraries()
 
 	wp_enqueue_style('materialize', Get_template_directory_uri() . '/materialize/css/materialize.css');
 	wp_enqueue_script('materialize_js', Get_template_directory_uri() . '/materialize/js/materialize.js', '', '', true);
+	wp_enqueue_script('init_js', Get_template_directory_uri() . '/materialize/js/init.js', '', '', true);
 
 	// NodeGarden JS - http://nodegardenjs.org
 
@@ -89,6 +90,34 @@ register_nav_menus(array(
 ));
 
 // Register footer widgets
+
+// Custom Function Wordpress
+
+function reg_cat() {
+         register_taxonomy_for_object_type('class_type','classes');
+}
+add_action('init', 'reg_cat');
+
+
+function wpb_custom_new_menu() {
+  register_nav_menus(
+    array(
+      'my-custom-menu' => __( 'My Custom Menu' ),
+      'extra-menu' => __( 'Extra Menu' )
+    )
+  );
+}
+add_action( 'init', 'wpb_custom_new_menu' );
+
+add_theme_support( 'custom-logo', array(
+	'height'      => 75,
+	'width'       => 150,
+	'flex-height' => true,
+	'flex-width'  => true,
+	'header-text' => array( 'site-title', 'site-description' ),
+) );
+
+//
 
 function sidebars()
 {
@@ -176,6 +205,53 @@ function display_posts()
 
 add_shortcode('displayposts', 'display_posts');
 
+// Save the Metabox Data
+
+function Classes_saveCustomMeta($post_id, $post)
+{
+
+	// Check for nonce
+
+	$checkNonce = !wp_verify_nonce($_POST['eventmeta_noncename'], plugin_basename(__FILE__));
+
+	// User can edit
+
+	$userEdit = !current_user_can('edit_post', $post->ID);
+
+	// Validate user
+
+	if ($checkNonce and $userEdit) {
+		return $post->ID;
+	}
+
+	// We'll put it into an array to make it easier to loop though.
+
+	$Classes_Meta['_client_name'] = $_POST['_client_name'];
+	$Classes_Meta['_problem'] = $_POST['_problem'];
+	$Classes_Meta['_description'] = $_POST['_description'];
+	$Classes_Meta['_solution'] = $_POST['_solution'];
+
+	// Add values of $events_meta as custom fields
+
+	foreach($Classes_Meta as $key => $value) {
+		if ($post->post_type == 'revision') {
+		}
+
+		if (get_post_meta($post->ID, $key, FALSE)) {
+			update_post_meta($post->ID, $key, $value);
+		}
+		else {
+			add_post_meta($post->ID, $key, $value);
+		}
+
+		if (!$value) {
+			delete_post_meta($post->ID, $key);
+		}
+	}
+}
+
+add_action('save_post', 'Classes_saveCustomMeta', 1, 2); // save the custom fields
+
 // Add transparent header box options
 
 function init_themeOption()
@@ -192,7 +268,7 @@ function init_themeOption()
 
 add_action('add_meta_boxes', 'init_themeOption');
 
-// Create HTML for casestudy custom meta fields
+// Create HTML for Classes custom meta fields
 
 function create_themeOption()
 {
@@ -253,12 +329,12 @@ function save_themeOption($post_id, $post)
 
 	// We'll put it into an array to make it easier to loop though.
 
-	$caseStudy_Meta['_headerColor'] = $_POST['_headerColor'];
-	$caseStudy_Meta['_trans'] = $_POST['_trans'];
+	$Classes_Meta['_headerColor'] = $_POST['_headerColor'];
+	$Classes_Meta['_trans'] = $_POST['_trans'];
 
 	// Add values of $events_meta as custom fields
 
-	foreach($caseStudy_Meta as $key => $value) {
+	foreach($Classes_Meta as $key => $value) {
 		if ($post->post_type == 'revision') {
 		}
 
@@ -276,6 +352,23 @@ function save_themeOption($post_id, $post)
 }
 
 add_action('save_post', 'save_themeOption', 1, 2); // save the custom fields
+
+// Case Study Taxonomies
+function Classes_taxonomies(){
+  // Tech taxonomy arguments
+  $tech_args = array(
+    'label' => 'Technologies Used',
+    'public' => true,
+    'publicaly_queryable' => true,
+    'show_ui' => true,
+    'show_admin_column' => true,
+    'hierarchical' => true,
+  );
+
+  // Registers Taxonomy
+  register_taxonomy('technologies', 'case', $tech_args);
+}
+Classes_taxonomies();
 
 function enqueue_media_uploader()
 {
@@ -308,5 +401,4 @@ function materialize_pagination()
 		echo '</ul>';
 	}
 }
-
 ?>
