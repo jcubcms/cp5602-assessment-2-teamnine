@@ -127,6 +127,15 @@ add_theme_support( 'custom-logo', array(
 	'header-text' => array( 'site-title', 'site-description' ),
 ) );
 
+
+add_theme_support('custom-header', array(
+    'default-image' => '', // set default header image
+    'width' => 1500, // set the width for header image
+    'height' => 500, // set the height for header image
+    'flex-height' => true, // enable flex height
+    'flex-width' => true, // enable flex width
+));
+
 //
 
 function sidebars()
@@ -561,6 +570,53 @@ add_action('init', 'cw_post_type_events');
 
 /*Custom Post type end*/
 
+
+// ADD CUSTOM POST TYPE: NewsLetter
+/*Custom Post type start*/
+
+function cw_post_type_newsletter() {
+
+$supports = array(
+'title', // post title
+'editor', // post content
+'author', // post author
+'thumbnail', // featured images
+'excerpt', // post excerpt
+'custom-fields', // custom fields
+'comments', // post comments
+'revisions', // post revisions
+'post-formats', // post formats
+);
+
+$labels = array(
+'name' => _x('NewsLetter', 'plural'),
+'singular_name' => _x('NewsLetter', 'singular'),
+'menu_name' => _x('NewsLetter', 'admin menu'),
+'name_admin_bar' => _x('NewsLetter', 'admin bar'),
+'add_new' => _x('Add New', 'add new'),
+'add_new_item' => __('Add New NewsLetter'),
+'new_item' => __('New NewsLetter'),
+'edit_item' => __('Edit NewsLetter'),
+'view_item' => __('View NewsLetter'),
+'all_items' => __('All NewsLetter'),
+'search_items' => __('Search NewsLetter'),
+'not_found' => __('No NewsLetter found.'),
+);
+
+$args = array(
+'supports' => $supports,
+'labels' => $labels,
+'public' => true,
+'query_var' => true,
+'rewrite' => array('slug' => 'newsletter'),
+'has_archive' => true,
+'hierarchical' => false,
+);
+register_post_type('NewsLetter', $args);
+}
+add_action('init', 'cw_post_type_newsletter');
+
+/*Custom Post type end*/
 
 
 // Custom Post Type Ends
