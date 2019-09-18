@@ -93,6 +93,16 @@ register_nav_menus(array(
 
 // Custom Function Wordpress
 
+if ( function_exists('register_sidebar') )
+  register_sidebar(array(
+    'name' => 'Footer',
+    'before_widget' => '<div class = "widgetizedArea">',
+    'after_widget' => '</div>',
+    'before_title' => '<h3>',
+    'after_title' => '</h3>',
+  )
+);
+
 function reg_cat() {
          register_taxonomy_for_object_type('class_type','classes');
 }
@@ -401,4 +411,159 @@ function materialize_pagination()
 		echo '</ul>';
 	}
 }
+
+
+// Custom Post Type Starts
+// ADD CUSTOM POST TYPE: Classes
+/*Custom Post type start*/
+
+function cw_post_type_classes() {
+
+$supports = array(
+'title', // post title
+'editor', // post content
+'author', // post author
+'thumbnail', // featured images
+'excerpt', // post excerpt
+'custom-fields', // custom fields
+'comments', // post comments
+'revisions', // post revisions
+'post-formats', // post formats
+'categories', // post category
+);
+
+$labels = array(
+'name' => _x('Classes', 'plural'),
+'singular_name' => _x('Classes', 'singular'),
+'menu_name' => _x('Classes', 'admin menu'),
+'name_admin_bar' => _x('Classes', 'admin bar'),
+'add_new' => _x('Add New', 'add new'),
+'add_new_item' => __('Add New Classes'),
+'new_item' => __('New Classes'),
+'edit_item' => __('Edit Classes'),
+'view_item' => __('View Classes'),
+'all_items' => __('All Classes'),
+'search_items' => __('Search Classes'),
+'taxonomies' => array('classes_type'),
+'not_found' => __('No Classes found.'),
+);
+	
+
+
+$args = array(
+'supports' => $supports,
+'labels' => $labels,
+'public' => true,
+'query_var' => true,
+'rewrite' => array('slug' => 'classes'),
+'has_archive' => true,
+'hierarchical' => false,
+);
+register_post_type('Classes', $args);
+}
+add_action('init', 'cw_post_type_classes');
+
+/*Custom Post type end*/
+
+
+// ADD CUSTOM POST TYPE: News
+/*Custom Post type start*/
+
+function cw_post_type_news() {
+
+$supports = array(
+'title', // post title
+'editor', // post content
+'author', // post author
+'thumbnail', // featured images
+'excerpt', // post excerpt
+'custom-fields', // custom fields
+'comments', // post comments
+'revisions', // post revisions
+'post-formats', // post formats
+);
+
+$labels = array(
+'name' => _x('News', 'plural'),
+'singular_name' => _x('News', 'singular'),
+'menu_name' => _x('News', 'admin menu'),
+'name_admin_bar' => _x('News', 'admin bar'),
+'add_new' => _x('Add New', 'add new'),
+'add_new_item' => __('Add New News'),
+'new_item' => __('New News'),
+'edit_item' => __('Edit News'),
+'view_item' => __('View News'),
+'all_items' => __('All News'),
+'search_items' => __('Search News'),
+'not_found' => __('No News found.'),
+);
+
+$args = array(
+'supports' => $supports,
+'labels' => $labels,
+'public' => true,
+'query_var' => true,
+'rewrite' => array('slug' => 'news'),
+'has_archive' => true,
+'hierarchical' => false,
+);
+register_post_type('News', $args);
+}
+add_action('init', 'cw_post_type_news');
+
+/*Custom Post type end*/
+
+
+// ADD CUSTOM POST TYPE: Events
+/*Custom Post type start*/
+
+function cw_post_type_events() {
+
+$supports = array(
+'title', // post title
+'editor', // post content
+'author', // post author
+'thumbnail', // featured images
+'excerpt', // post excerpt
+'custom-fields', // custom fields
+'comments', // post comments
+'revisions', // post revisions
+'post-formats', // post formats
+);
+
+$labels = array(
+'name' => _x('Events', 'plural'),
+'singular_name' => _x('Events', 'singular'),
+'menu_name' => _x('Events', 'admin menu'),
+'name_admin_bar' => _x('Events', 'admin bar'),
+'add_new' => _x('Add New', 'add new'),
+'add_new_item' => __('Add New Events'),
+'new_item' => __('New Events'),
+'edit_item' => __('Edit Events'),
+'view_item' => __('View Events'),
+'all_items' => __('All Events'),
+'search_items' => __('Search Events'),
+'not_found' => __('No Events found.'),
+);
+
+$args = array(
+'supports' => $supports,
+'labels' => $labels,
+'public' => true,
+'query_var' => true,
+'rewrite' => array('slug' => 'events'),
+'has_archive' => true,
+'hierarchical' => false,
+);
+register_post_type('Events', $args);
+}
+add_action('init', 'cw_post_type_events');
+
+/*Custom Post type end*/
+
+
+
+// Custom Post Type Ends
+
+
 ?>

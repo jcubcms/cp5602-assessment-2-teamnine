@@ -1,12 +1,25 @@
-<?php get_header(); ?>
+<?php
+/**
+ * Template Name: Events
+ */
+
+get_header(); ?>
+
 <main>
-<div class="container">
-  <div class="row">
-    <div class="col m9 sm12">
-    <!-- Start the Loop. -->
-    <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-       <!-- Display the Title as a link to the Post's permalink. -->
-      <div class="card">
+	<?php while ( have_posts() ) : the_post(); ?>
+
+		<?php
+			$args = array(
+				'post_type'      => 'events',
+				'posts_per_page' => - 1,
+			);
+			$q    = new WP_Query( $args );
+		?>
+
+		<div class="row">
+			<?php while ( $q->have_posts() ) : $q->the_post(); ?>
+				<div class="col s4">
+ <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
         <a href="<?php the_permalink(); ?>">
           <?php the_post_thumbnail( 'full', array( 'class' => 'responsive-img') ); ?>
@@ -27,18 +40,13 @@
           <a class="waves-effect waves-light btn blogBtn" href="<?php the_permalink(); ?>">Read More</a>
         </div>
       </div>
-      </div>
-     	<!-- Stop The Loop (but note the "else:" - see next line). -->
-    <?php endwhile; else : ?>
- 	    <p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
- 	    <!-- REALLY stop The Loop. -->
-    <?php endif; ?>
-  </div>
-  <div class="sidebar col m3 sm12">
-    <?php dynamic_sidebar('Blog'); ?>
-  </div>
-  </div>
-  <?php materialize_pagination(); ?>
-</div>
+      </div>	
+				</div>
+			<?php endwhile; ?>
+			<?php wp_reset_postdata(); ?>
+		</div>
+
+	<?php endwhile; ?>
 </main>
-<?php get_footer(); ?>
+
+<?php get_footer();

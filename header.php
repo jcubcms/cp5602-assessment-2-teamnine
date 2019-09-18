@@ -39,14 +39,6 @@
       
 		
 <nav>
-<!-- Dropdown Structure -->
-<ul id="dropdown1" class="dropdown-content">
-  <li><a href="#!">one</a></li>
-  <li><a href="#!">two</a></li>
-  <li class="divider"></li>
-  <li><a href="#!">three</a></li>
-</ul>
-<nav>
   <div class="nav-wrapper">
     <a href="/" class="brand-logo">
 		<div class="nav-wrapper">		

@@ -2,7 +2,7 @@
 <main>
 <div class="container">
   <div class="row">
-    <div class="col m9 sm12">
+    <div class="col m12 sm12">
     <!-- Start the Loop. -->
     <?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
        <!-- Display the Title as a link to the Post's permalink. -->

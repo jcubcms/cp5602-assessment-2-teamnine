@@ -8,6 +8,7 @@
 		</div>
 		<div class="overlay"></div>
 	</div>
+<main>
 	<div class="container">
 		<div class="row">
 			<div class="bngs-singleContent">
@@ -22,5 +23,6 @@
 			</div>
 		</div>
 	</div>
+</main>
 <?php endwhile; ?>
 <?php get_footer(); ?>
